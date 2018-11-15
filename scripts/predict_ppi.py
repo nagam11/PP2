@@ -1,5 +1,6 @@
 import argparse
 import os
+import timeit
 import numpy as np
 from sklearn.neural_network import MLPClassifier
 from sklearn.model_selection import StratifiedKFold
@@ -19,6 +20,8 @@ ppi_file = args.ppi_fasta
 if (not os.path.isfile(vectors_file) or not os.path.isfile(ppi_file)):
     print("missing input file names")
     exit()
+
+start = timeit.default_timer()
 
 # read the data
 #  1. vectors
@@ -52,7 +55,8 @@ with open(ppi_file) as file:
         i = i + 1
 
 print("sequences:", len(seqs))
-
+print("time for reading:", timeit.default_timer() - start)
+start = timeit.default_timer()
 
 # translate protein sequence into feature vectors
 def convert_seq_gram(long_gram, vectors, offset=3):
@@ -99,9 +103,11 @@ scoring = {'Accuracy': make_scorer(accuracy_score),
 clf = GridSearchCV(mlp, parameter_space, n_jobs=args.jobs, cv=skf,
                    scoring=scoring, refit='AUC', return_train_score=True).fit(X, y)
 
-print("time:", clf.refit_time_)
+opt_time = timeit.default_timer() - start
+print("time:", opt_time)
 print('best parameters found:\n', clf.best_params_)
 
 with open(args.opti_output, "w+") as f:
+    f.write("time:", opt_time)
     f.write('best parameters found:\n', clf.best_params_)
     f.write(str(clf.cv_results_))
