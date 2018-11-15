@@ -103,4 +103,5 @@ print("time:", clf.refit_time_)
 print('best parameters found:\n', clf.best_params_)
 
 with open(args.opti_output, "w+") as f:
+    f.write('best parameters found:\n', clf.best_params_)
     f.write(str(clf.cv_results_))
