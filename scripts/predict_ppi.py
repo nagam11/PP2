@@ -10,7 +10,7 @@ parser = argparse.ArgumentParser(description='Predict proteins-protein interacti
 parser.add_argument('-v', '--trained_vectors')
 parser.add_argument('-f', '--ppi_fasta')
 parser.add_argument('-o', '--opti_output')
-parser.add_argument('-j', '--jobs', default=1)
+parser.add_argument('-j', '--jobs', default=1, type=int)
 args = parser.parse_args()
 
 vectors_file = args.trained_vectors
