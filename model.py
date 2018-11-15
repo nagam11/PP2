@@ -102,8 +102,8 @@ scoring = {'Accuracy': make_scorer(accuracy_score),
            'AUC': make_scorer(roc_auc_score)}
 
 # Set the parameters
-parameters = {'max_iter': [10], 'hidden_layer_sizes': [(25,)],
-              'random_state': [42], 'learning_rate': ['constant'], 'learning_rate_init': [0.001]}
+parameters = {'max_iter': [100, 200, 500], 'hidden_layer_sizes': [(25,), (50,), (100,)],
+              'random_state': [42], 'learning_rate': ['constant'], 'learning_rate_init': [0.001, 0.01]}
 
 # Initialise grid search for hyperparameters with MLPClassifier
 clf = GridSearchCV(MLPClassifier(), parameters, cv=skf, scoring=scoring, refit='AUC', return_train_score=True)
