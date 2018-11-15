@@ -4,6 +4,7 @@ import numpy as np
 from sklearn.neural_network import MLPClassifier
 from sklearn.model_selection import StratifiedKFold
 from sklearn.model_selection import GridSearchCV
+from sklearn.metrics import make_scorer, accuracy_score, precision_score, recall_score, roc_auc_score
 
 parser = argparse.ArgumentParser(description='Predict proteins-protein interactions')
 parser.add_argument('-v', '--trained_vectors')
@@ -71,8 +72,6 @@ offset = 3
 X = []
 y = []
 for i in range(len(names)):
-    if i > 3:
-        break
     seq = seqs[i]
     ppi = ppis[i]
     for j in range(len(seq) - 2 * offset):
@@ -93,10 +92,15 @@ parameter_space = {
 }
 mlp = MLPClassifier(random_state=42)
 skf = StratifiedKFold(n_splits=10, random_state=42)
-clf = GridSearchCV(mlp, parameter_space, n_jobs=args.jobs, cv=skf).fit(X, y)
+scoring = {'Accuracy': make_scorer(accuracy_score),
+           'Precision': make_scorer(precision_score),
+           'Recall': make_scorer(recall_score),
+           'AUC': make_scorer(roc_auc_score)}
+clf = GridSearchCV(mlp, parameter_space, n_jobs=args.jobs, cv=skf,
+                   scoring=scoring, refit='AUC', return_train_score=True).fit(X, y)
 
 print("time:", clf.refit_time_)
 print('best parameters found:\n', clf.best_params_)
 
-with open(args.opti_output) as f:
-    f.write(clf.cv_results_)
+with open(args.opti_output, "w+") as f:
+    f.write(str(clf.cv_results_))
