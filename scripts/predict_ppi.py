@@ -8,6 +8,8 @@ from sklearn.model_selection import GridSearchCV
 parser = argparse.ArgumentParser(description='Predict proteins-protein interactions')
 parser.add_argument('-v', '--trained_vectors')
 parser.add_argument('-f', '--ppi_fasta')
+parser.add_argument('-o', '--opti_output')
+parser.add_argument('-j', '--jobs', default=1)
 args = parser.parse_args()
 
 vectors_file = args.trained_vectors
@@ -66,19 +68,35 @@ def max_ppi_label(ppi_string):
 
 
 offset = 3
-features = []
-labels = []
+X = []
+y = []
 for i in range(len(names)):
+    if i > 3:
+        break
     seq = seqs[i]
     ppi = ppis[i]
     for j in range(len(seq) - 2 * offset):
         # sequence residues
         seq_vecs = convert_seq_gram(seq[j:j + 2 * offset + 1], vectors, offset)
-        features.append(seq_vecs)
+        X.append(seq_vecs)
         # ppi labels per residue
         ppi_label = max_ppi_label(ppi[j:j + 2 * offset + 1])
-        labels.append(ppi_label)
+        y.append(ppi_label)
 
-print("features:", len(features), "labels:", len(labels))
+print("features:", len(X), "labels:", len(y))
 
 # Create model
+parameter_space = {
+    'hidden_layer_sizes': [25, 50, 100],
+    'learning_rate_init': [0.001, 0.01],
+    'n_iter_no_change': [100, 200, 500],
+}
+mlp = MLPClassifier(random_state=42)
+skf = StratifiedKFold(n_splits=10, random_state=42)
+clf = GridSearchCV(mlp, parameter_space, n_jobs=args.jobs, cv=skf).fit(X, y)
+
+print("time:", clf.refit_time_)
+print('best parameters found:\n', clf.best_params_)
+
+with open(args.opti_output) as f:
+    f.write(clf.cv_results_)
