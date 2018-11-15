@@ -1,3 +1,6 @@
+biovec/__pycache__
+scripts/corpus
 data
 venv
 .idea
+output
