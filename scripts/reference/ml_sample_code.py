@@ -10,6 +10,8 @@ from sklearn.preprocessing import RobustScaler
 from sklearn.neural_network import MLPClassifier
 from sklearn.model_selection import GridSearchCV, StratifiedKFold
 
+from sklearn.metrics import make_scorer, accuracy_score, recall_score, precision_score
+
 
 def norm(array):
     return (array - np.min(array)) / (np.max(array) - np.min(array))
@@ -114,6 +116,11 @@ def train_and_optimize(data_x, data_y):
     all_cv_results = ''
     ref_results = ''
 
+    scoring = {'Accuracy': make_scorer(accuracy_score),
+               'Precision': make_scorer(precision_score),
+               'Recall': make_scorer(recall_score),
+               'AUC': make_scorer(roc_auc_score)}
+
     for i, (train, test) in enumerate(kfold1.split(data_x, data_y)):
         print('CV-Split {}'.format(i + 1))
 
@@ -123,7 +130,7 @@ def train_and_optimize(data_x, data_y):
             splits.append((resample(x1, data_y[train], oversample=False), x2))
 
         gridcv = GridSearchCV(model, params, cv=splits, n_jobs=3, refit=True,
-                              scoring='roc_auc')
+                              scoring=scoring)
 
         gridcv.fit(data_x[train], data_y[train])
 
