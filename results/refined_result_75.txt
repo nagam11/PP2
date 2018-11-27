@@ -1,0 +1,79 @@
+kfold1_split: 0
+###
+Best Params: {'clf__epsilon': 1, 'clf__alpha': 0.1, 'clf__learning_rate_init': 0.1}
+Train Score: 0.5572616458769146
+Cross Score: 0.5592135795248006
+Test Score: 0.5775776297443842
+###
+kfold1_split: 1
+###
+Best Params: {'clf__epsilon': 1, 'clf__alpha': 0.1, 'clf__learning_rate_init': 0.1}
+Train Score: 0.5759996187655061
+Cross Score: 0.5625715120282376
+Test Score: 0.5740961735089078
+###
+kfold1_split: 2
+###
+Best Params: {'clf__epsilon': 0.0001, 'clf__alpha': 0.1, 'clf__learning_rate_init': 0.01}
+Train Score: 0.5767206431329067
+Cross Score: 0.5655058265029081
+Test Score: 0.5652754763749032
+###
+kfold1_split: 3
+###
+Best Params: {'clf__epsilon': 1, 'clf__alpha': 0.1, 'clf__learning_rate_init': 0.1}
+Train Score: 0.5600355758460263
+Cross Score: 0.5640262487350165
+Test Score: 0.5551443532145623
+###
+kfold1_split: 4
+###
+Best Params: {'clf__epsilon': 1e-08, 'clf__alpha': 0.1, 'clf__learning_rate_init': 0.001}
+Train Score: 0.5766771083335585
+Cross Score: 0.566008710471947
+Test Score: 0.5710060737527115
+###
+kfold1_split: 5
+###
+Best Params: {'clf__epsilon': 1e-08, 'clf__alpha': 0.1, 'clf__learning_rate_init': 0.01}
+Train Score: 0.5767691134855164
+Cross Score: 0.5649046773354993
+Test Score: 0.570963681437868
+###
+kfold1_split: 6
+###
+Best Params: {'clf__epsilon': 1, 'clf__alpha': 0.1, 'clf__learning_rate_init': 0.1}
+Train Score: 0.5613045531221458
+Cross Score: 0.5658814649646692
+Test Score: 0.5588889370932755
+###
+kfold1_split: 7
+###
+Best Params: {'clf__epsilon': 1e-08, 'clf__alpha': 0.1, 'clf__learning_rate_init': 0.01}
+Train Score: 0.5814320114543262
+Cross Score: 0.569338750118692
+Test Score: 0.5362893220504812
+###
+kfold1_split: 8
+###
+Best Params: {'clf__epsilon': 1, 'clf__alpha': 0.1, 'clf__learning_rate_init': 0.1}
+Train Score: 0.5612310742535198
+Cross Score: 0.5640458805377154
+Test Score: 0.5507425777872352
+###
+kfold1_split: 9
+###
+Best Params: {'clf__epsilon': 1, 'clf__alpha': 0.1, 'clf__learning_rate_init': 0.1}
+Train Score: 0.582597179197245
+Cross Score: 0.5670734772510708
+Test Score: 0.5391355178575924
+###
+###
+CV Train Score: 0.5710028523467666 (0.009803344630463059)
+CV Cross Score: 0.5648570127470556 (0.0027124769807286963)
+CV Test Score: 0.5599119742821921 (0.014471423209080955)
+###
+###
+Final Params: {'clf__epsilon': 1, 'clf__alpha': 0.1, 'clf__learning_rate_init': 0.1}
+Final Cross Score: 0.5641079123610753 (0.011120085281212099)
+###
