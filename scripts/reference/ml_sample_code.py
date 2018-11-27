@@ -129,7 +129,7 @@ def train_and_optimize(data_x, data_y):
         for x1, x2 in kfold2.split(data_x[train], data_y[train]):
             splits.append((resample(x1, data_y[train], oversample=False), x2))
 
-        gridcv = GridSearchCV(model, params, cv=splits, n_jobs=3, refit=True,
+        gridcv = GridSearchCV(model, params, cv=splits, n_jobs=3, refit="AUC",
                               scoring=scoring)
 
         gridcv.fit(data_x[train], data_y[train])
