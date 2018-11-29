@@ -18,50 +18,30 @@ mean_stats_dt <- fread("../../results/mean_stats_data_table.tsv")
 mean_stats_dt
 ```
 
-## Boxplots
-
-```{r}
-auc <- ggplot(mean_stats_dt, aes(factor(vector_size), AUC, col = validation)) +
-  geom_boxplot() + 
-  scale_y_continuous(limits = c(0,1)) +
-  scale_color_brewer(palette = "Set1") +
-  labs(x = "vector size")
-
-acc <- ggplot(mean_stats_dt, aes(factor(vector_size), Accuracy, col = validation)) +
-  geom_boxplot() + 
-  scale_y_continuous(limits = c(0,1)) +
-  scale_color_brewer(palette = "Set1") +
-  labs(x = "vector size")
-
-prec <- ggplot(mean_stats_dt, aes(factor(vector_size), Precision, col = validation)) +
-  geom_boxplot() + 
-  scale_y_continuous(limits = c(0,1)) +
-  scale_color_brewer(palette = "Set1") +
-  labs(x = "vector size")
-
-rec <- ggplot(mean_stats_dt, aes(factor(vector_size), Recall, col = validation)) +
-  geom_boxplot() + 
-  scale_y_continuous(limits = c(0,1)) +
-  scale_color_brewer(palette = "Set1") +
-  labs(x = "vector size")
-
-p <- plot_grid(auc, acc, prec, rec)
-title <- ggdraw() + draw_label("Comparison of Different Vector Sizes", fontface='bold')
-plot_grid(title, p, ncol=1, rel_heights=c(0.1, 1))
-```
-
-## Line Plots
+### Tidy data
 ```{r}
 stats_lf <- melt(mean_stats_dt, id.vars = c("vector_size", "outer_split", "validation"),
                  measure.vars = c("AUC", "Accuracy", "Precision", "Recall"), variable.name = "metric")
 summary <- stats_lf[, .(mean = mean(value), median = median(value), sd = sd(value)), by = c("vector_size", "metric", "validation")]
+```
 
+## Boxplots
+
+```{r}
+ggplot(stats_lf, aes(factor(vector_size), value, col = validation)) +
+  geom_boxplot() + 
+  scale_y_continuous(limits = c(0,1)) +
+  labs(x = "vector size") +
+  facet_wrap(~metric) +
+  scale_color_brewer(palette = "Set2")
+```
+
+## Line Plots
+```{r}
 ggplot(summary, aes(vector_size, median, col = validation)) +
   geom_point() + geom_line() +
-  geom_errorbar(aes())
+  #geom_errorbar(aes(ymin=median-sd, ymax=median+sd), width=.2) +
   scale_y_continuous(limits = c(0,1)) +
-  scale_color_brewer(palette = "Set1") +
-  labs(x = "vector size") +
-  facet_wrap(~metric)
-
+  facet_wrap(~metric) +
+  scale_color_brewer(palette = "Set2")
 ```
