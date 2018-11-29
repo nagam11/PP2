@@ -1,0 +1,56 @@
+---
+title: "Optimizing Vector sizes"
+author: "Michaela Müller"
+date: "29 November 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+library(data.table)
+library(cowplot)
+```
+
+## Read data
+```{r}
+mean_stats_dt <- fread("../../results/mean_stats_data_table.tsv")
+mean_stats_dt
+```
+
+### Tidy data
+```{r}
+stats_lf <- melt(mean_stats_dt, id.vars = c("vector_size", "outer_split", "validation"),
+                 measure.vars = c("AUC", "Accuracy", "Precision", "Recall"), variable.name = "metric")
+summary <- stats_lf[, .(mean = mean(value), median = median(value), sd = sd(value)), by = c("vector_size", "metric", "validation")]
+```
+
+## Boxplots
+
+```{r}
+ggplot(stats_lf, aes(factor(vector_size), value, col = validation)) +
+  geom_boxplot() + 
+  scale_y_continuous(limits = c(0,1)) +
+  labs(x = "vector size") +
+  facet_wrap(~metric) +
+  scale_color_brewer(palette = "Set2")
+```
+
+## Line Plots
+```{r}
+ggplot(summary, aes(vector_size, median, col = validation)) +
+  geom_point() + geom_line() +
+  #geom_errorbar(aes(ymin=median-sd, ymax=median+sd), width=.2) +
+  scale_y_continuous(limits = c(0,1)) +
+  facet_wrap(~metric) +
+  scale_color_brewer(palette = "Set2") +
+  xlab("vector size")
+
+ggplot(summary, aes(vector_size, mean, col = validation)) +
+  geom_point() + geom_line() +
+  #geom_errorbar(aes(ymin=median-sd, ymax=median+sd), width=.2) +
+  scale_y_continuous(limits = c(0,1)) +
+  facet_wrap(~metric) +
+  scale_color_brewer(palette = "Set2") +
+  xlab("vector size")
+```

@@ -113,7 +113,7 @@ def train_and_optimize(data_x, data_y):
     cv_cross = []
     params_scores = {}
 
-    all_cv_results = ''
+    all_cv_results = []
     ref_results = ''
 
     scoring = {'Accuracy': make_scorer(accuracy_score),
@@ -153,7 +153,7 @@ def train_and_optimize(data_x, data_y):
         cv_train.append(s_train)
         cv_cross.append(gridcv.best_score_)
 
-        all_cv_results = gridcv.cv_results_
+        all_cv_results.append(gridcv.cv_results_)
         parse_cv_results(gridcv.cv_results_, params_scores)
 
     test_mean, test_std = np.mean(cv_test), np.std(cv_test, ddof=1)

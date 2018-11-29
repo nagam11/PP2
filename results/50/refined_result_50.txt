@@ -1,0 +1,79 @@
+kfold1_split: 0
+###
+Best Params: {'clf__epsilon': 1e-08, 'clf__learning_rate_init': 0.01, 'clf__alpha': 0.1}
+Train Score: 0.5
+Cross Score: 0.5411813669470975
+Test Score: 0.5
+###
+kfold1_split: 1
+###
+Best Params: {'clf__epsilon': 1, 'clf__learning_rate_init': 0.1, 'clf__alpha': 0.1}
+Train Score: 0.5
+Cross Score: 0.541771843170762
+Test Score: 0.5
+###
+kfold1_split: 2
+###
+Best Params: {'clf__epsilon': 1, 'clf__learning_rate_init': 0.1, 'clf__alpha': 0.1}
+Train Score: 0.5000494605934949
+Cross Score: 0.5453601529283765
+Test Score: 0.5
+###
+kfold1_split: 3
+###
+Best Params: {'clf__epsilon': 1, 'clf__learning_rate_init': 0.1, 'clf__alpha': 0.01}
+Train Score: 0.5
+Cross Score: 0.5436542600315859
+Test Score: 0.5
+###
+kfold1_split: 4
+###
+Best Params: {'clf__epsilon': 1e-08, 'clf__learning_rate_init': 0.001, 'clf__alpha': 0.01}
+Train Score: 0.5
+Cross Score: 0.5443693998982955
+Test Score: 0.5
+###
+kfold1_split: 5
+###
+Best Params: {'clf__epsilon': 0.0001, 'clf__learning_rate_init': 0.01, 'clf__alpha': 0.1}
+Train Score: 0.5
+Cross Score: 0.5462902134213502
+Test Score: 0.5
+###
+kfold1_split: 6
+###
+Best Params: {'clf__epsilon': 1e-08, 'clf__learning_rate_init': 0.001, 'clf__alpha': 0.1}
+Train Score: 0.5
+Cross Score: 0.5485204515254566
+Test Score: 0.5
+###
+kfold1_split: 7
+###
+Best Params: {'clf__epsilon': 0.0001, 'clf__learning_rate_init': 0.01, 'clf__alpha': 0.001}
+Train Score: 0.5
+Cross Score: 0.5485737641767959
+Test Score: 0.5
+###
+kfold1_split: 8
+###
+Best Params: {'clf__epsilon': 1, 'clf__learning_rate_init': 0.1, 'clf__alpha': 0.1}
+Train Score: 0.5000680843212918
+Cross Score: 0.5480900539450241
+Test Score: 0.5
+###
+kfold1_split: 9
+###
+Best Params: {'clf__epsilon': 1, 'clf__learning_rate_init': 0.1, 'clf__alpha': 0.1}
+Train Score: 0.5000186263950687
+Cross Score: 0.5485332344641944
+Test Score: 0.4999225286643942
+###
+###
+CV Train Score: 0.5000136171309856 (2.4887536249454415e-05)
+CV Cross Score: 0.5456344740508938 (0.002831920501594787)
+CV Test Score: 0.4999922528664394 (2.4498587388968077e-05)
+###
+###
+Final Params: {'clf__epsilon': 1e-08, 'clf__learning_rate_init': 0.0001, 'clf__alpha': 0.01}
+Final Cross Score: nan (nan)
+###

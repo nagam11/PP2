@@ -101,10 +101,11 @@ class Model(object):
             # Get the data
             X, y = self.compose_data(vectors)
 
-            cv_result, refined_result = train_and_optimize(X, y)
+            cv_results, refined_result = train_and_optimize(X, y)
 
-            with open('cv_result_' + key + '.json', 'w') as f:
-                f.write(dumps(cv_result))
+            for i in range(len(cv_results)):
+                with open('cv_result_' + key + '_outer_split_' + str(i) + '.json', 'w') as f:
+                    f.write(dumps(cv_results[i]))
 
             with open('refined_result_' + key + '.txt', 'w') as f:
                 f.write(refined_result)
