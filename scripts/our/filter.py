@@ -34,15 +34,15 @@ def normalize():
     """
     # Later when models available
     # for i in vector_sizes
-    for i in ['50', '100', '200']:
+    for i in ['25', '50', '75', '100', '125', '150', '200']:
         for m in metrics:
             all_vectors_means[i][m.__str__()] = all_vectors_means[i][m.__str__()] / 10
 
 
 start()
 # Later when models available
-#for i in ['25', '50', '75', '100', '125', '150', '200']:
-for i in ['50', '100','200']:
+for i in ['25', '50', '75', '100', '125', '150', '200']:
+#for i in ['50', '100', '125', '150', '200']:
     #for i in vector_sizes:
     for j in range(10):
         for metric in metrics:
@@ -60,11 +60,15 @@ for key, metrics in all_vectors_means.items():
 
         if "mean_test_AUC" in metric and len(array) != 0:
             all_vectors_means[key].update({"max_index": np.argmax(all_vectors_means[key][metric])})
+
+for key, metrics in all_vectors_means.items():
+    index = all_vectors_means[key]["max_index"]
+    print(index)
     for metric, array in metrics.items():
         if metric not in "max_index" and len(array) != 0:
             all_vectors_means[key][metric] = all_vectors_means[key][metric][index]
 
-print(index)
+
 #normalize()
 
 metrics = ["AUC", "Recall", "Precision", "Accuracy"]
@@ -72,14 +76,13 @@ for m in metrics:
     train_means = []
     test_means = []
     #for i in vector_sizes:
-    for key in ['50', '100', '200']:
+    for key in ['25', '50', '75', '100', '125', '150', '200']:
         s = 'mean_train_' + m
         s1 = 'mean_test_' + m
         val = round(all_vectors_means[key][s], 4)
         val1 = round(all_vectors_means[key][s1], 4)
         train_means.append(val)
         test_means.append(val1)
-
 
     train_means = tuple(train_means)
     test_means = tuple(test_means)
@@ -94,11 +97,11 @@ for m in metrics:
                     color='IndianRed', label='Test')
 
     # Add some text for labels, title and custom x-axis tick labels, etc.
-    ax.set_ylabel('Best AUC')
-    ax.set_title('AUC by vector size for train and test')
+    ax.set_ylabel('Best ' + m)
+    ax.set_title(m + ' by vector size for train and test')
     ax.set_xticks(ind)
-    plt.ylim((0, 0.7))
-    ax.set_xticklabels(('50', '100', '200', 'G4', 'G5'))
+    plt.ylim((0, 0.8))
+    ax.set_xticklabels(('25', '50', '75', '100', '125', '150', '200'))
     ax.legend()
 
 
@@ -112,7 +115,7 @@ for m in metrics:
 
         xpos = xpos.lower()  # normalize the case of the parameter
         ha = {'center': 'center', 'right': 'left', 'left': 'right'}
-        offset = {'center': 0.5, 'right': 0.57, 'left': 0.43}  # x_txt = x + w*off
+        offset = {'center': 0.5, 'right': 0.1, 'left': 0.6}  # x_txt = x + w*off
 
         for rect in rects:
             height = rect.get_height()
