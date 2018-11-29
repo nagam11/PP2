@@ -1,0 +1,79 @@
+kfold1_split: 0
+###
+Best Params: {'clf__epsilon': 0.0001, 'clf__learning_rate_init': 0.01, 'clf__alpha': 0.1}
+Train Score: 0.5
+Cross Score: 0.544847649078913
+Test Score: 0.5
+###
+kfold1_split: 1
+###
+Best Params: {'clf__epsilon': 0.0001, 'clf__learning_rate_init': 0.01, 'clf__alpha': 0.1}
+Train Score: 0.5
+Cross Score: 0.5459750925812757
+Test Score: 0.5
+###
+kfold1_split: 2
+###
+Best Params: {'clf__epsilon': 0.0001, 'clf__learning_rate_init': 0.01, 'clf__alpha': 0.1}
+Train Score: 0.5
+Cross Score: 0.5481921911462102
+Test Score: 0.5
+###
+kfold1_split: 3
+###
+Best Params: {'clf__epsilon': 1, 'clf__learning_rate_init': 0.1, 'clf__alpha': 0.01}
+Train Score: 0.5
+Cross Score: 0.5458944033236234
+Test Score: 0.5
+###
+kfold1_split: 4
+###
+Best Params: {'clf__epsilon': 0.0001, 'clf__learning_rate_init': 0.01, 'clf__alpha': 0.1}
+Train Score: 0.5
+Cross Score: 0.5468245695998925
+Test Score: 0.5
+###
+kfold1_split: 5
+###
+Best Params: {'clf__epsilon': 0.0001, 'clf__learning_rate_init': 0.01, 'clf__alpha': 0.1}
+Train Score: 0.5
+Cross Score: 0.547043831282423
+Test Score: 0.5
+###
+kfold1_split: 6
+###
+Best Params: {'clf__epsilon': 1e-08, 'clf__learning_rate_init': 0.01, 'clf__alpha': 0.1}
+Train Score: 0.5
+Cross Score: 0.5488062394534557
+Test Score: 0.5
+###
+kfold1_split: 7
+###
+Best Params: {'clf__epsilon': 0.0001, 'clf__learning_rate_init': 0.0001, 'clf__alpha': 0.1}
+Train Score: 0.5
+Cross Score: 0.5494582975052333
+Test Score: 0.5
+###
+kfold1_split: 8
+###
+Best Params: {'clf__epsilon': 1e-08, 'clf__learning_rate_init': 0.001, 'clf__alpha': 0.1}
+Train Score: 0.5
+Cross Score: 0.548597774424067
+Test Score: 0.5
+###
+kfold1_split: 9
+###
+Best Params: {'clf__epsilon': 0.0001, 'clf__learning_rate_init': 0.01, 'clf__alpha': 0.1}
+Train Score: 0.5
+Cross Score: 0.5497026269761587
+Test Score: 0.5
+###
+###
+CV Train Score: 0.5 (0.0)
+CV Cross Score: 0.5475342675371253 (0.0016555561572621873)
+CV Test Score: 0.5 (0.0)
+###
+###
+Final Params: {'clf__epsilon': 1e-08, 'clf__learning_rate_init': 0.0001, 'clf__alpha': 0.01}
+Final Cross Score: nan (nan)
+###
