@@ -1,3 +1,5 @@
+import datetime
+
 import biovec
 
 import numpy as np
@@ -9,12 +11,16 @@ class Model(object):
 
     fasta = None
     trained_vectors = {}
+    layer_sizes = (50, )
 
-    def __init__(self, fasta_path, trained_vectors):
+    def __init__(self, fasta_path, trained_vectors, layer_sizes):
         self.fasta = self.read_fasta(fasta_path)
 
         for key, vectors in trained_vectors.items():
             self.trained_vectors.update({key: vectors})
+
+        if layer_sizes is not None:
+            self.layer_sizes = layer_sizes
 
     @staticmethod
     def read_fasta(path):
@@ -88,33 +94,41 @@ class Model(object):
 
         for entry in self.fasta:
             seq = entry.get('seq')
+            vecs.extend([self.compute_vector(vectors, seq[i - 2:i + 3]) for i in range(2, len(seq) - 2)])
+            bindings.append(np.array([1 if entry.get('bind')[i] == '+' else 0 for i in range(2, len(seq) - 2)]))
             vecs.extend([self.compute_vector(vectors, seq[i - 3:i + 4]) for i in range(3, len(seq) - 3)])
             bindings.append(np.array([1 if entry.get('bind')[i] == '+' else 0 for i in range(3, len(seq) - 3)]))
+            vecs.extend([self.compute_vector(vectors, seq[i - 4:i + 5]) for i in range(4, len(seq) - 4)])
+            bindings.append(np.array([1 if entry.get('bind')[i] == '+' else 0 for i in range(4, len(seq) - 4)]))
 
         return np.stack(vecs, axis=0), np.hstack(bindings)
 
     def train(self):
         print('Training started')
         print('Vector sizes: ' + ', '.join(self.trained_vectors.keys()))
+        print('Layer sizes: ' + str(self.layer_sizes))
         for key, vectors in self.trained_vectors.items():
             print('Training for vector size: ' + key)
             # Get the data
-            X, y = self.compose_data(vectors)
+            x, y = self.compose_data(vectors)
 
-            cv_results, refined_result = train_and_optimize(X, y)
+            print(str(datetime.datetime.now()))
+            cv_results, refined_result = train_and_optimize(x, y, self.layer_sizes)
+            print(str(datetime.datetime.now()))
 
             for i in range(len(cv_results)):
-                with open('cv_result_' + key + '_outer_split_' + str(i) + '.json', 'w') as f:
+                with open('cv_' + key + '_outersplit_' + str(i) + '_' + str(self.layer_sizes) + '.json', 'w') as f:
                     f.write(dumps(cv_results[i]))
 
-            with open('refined_result_' + key + '.txt', 'w') as f:
+            with open('refined_result_' + key + '_' + str(self.layer_sizes) + '.txt', 'w') as f:
                 f.write(refined_result)
 
 
 tr_vecs = {}
-for i in ['25', '50', '75', '100', '125', '150', '200']:
+for i in ['100']:
     model = biovec.models.load_protvec("../../trained_models/trained" + i + ".model")
     tr_vecs.update({i: model.wv.load_word2vec_format(fname="../../output/trained" + i + ".vectors")})
 
-model = Model('../../data/ppi_data.fasta', tr_vecs)
-model.train()
+for j in [(50, 25, 50, 25, 50, 25), (50, 50, 50, 50, 50, 50), (125, 100, 75, 50, 25, 5), (5, 25, 50, 75, 100, 125)]:
+    model = Model('../../data/ppi_data.fasta', tr_vecs, j)
+    model.train()

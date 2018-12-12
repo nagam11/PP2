@@ -73,7 +73,7 @@ def parse_cv_results(cv_results, params_scores):
             params_scores[repr(params)].append(scores[i])
 
 
-def train_and_optimize(data_x, data_y):
+def train_and_optimize(data_x, data_y, layer_sizes):
     rs1 = RobustScaler()
     rs2 = RobustScaler()
     pca = PCA(n_components=10,
@@ -91,21 +91,18 @@ def train_and_optimize(data_x, data_y):
     '''
     clf = MLPClassifier(solver='adam',
                         activation='relu',
-                        hidden_layer_sizes=(50, ),
-                        beta_1=0.9,
-                        beta_2=0.999,
-                        max_iter=200,
+                        hidden_layer_sizes=layer_sizes,
+                        max_iter=500,
                         early_stopping=True,
                         validation_fraction=0.2,
                         random_state=42)
-    model = Pipeline(steps=[('rs1', rs1), ('pca', pca),
-                            ('rs2', rs2), ('clf', clf)])
-    kfold1 = StratifiedKFold(n_splits=10, random_state=42)
-    kfold2 = StratifiedKFold(n_splits=3, random_state=42)
+    model = Pipeline(steps=[('rs1', rs1), ('clf', clf)])
+    kfold1 = StratifiedKFold(n_splits=2, random_state=42)
+    kfold2 = StratifiedKFold(n_splits=2, random_state=42)
     params = {# 'clf__C': [1e-8, 1e-6, 1e-4, 1e-2, 1, 10],
-              'clf__alpha': [0.1, 1e-2, 1e-3, 1e-4],
-              'clf__epsilon': [1, 1e-4, 1e-8],
-              'clf__learning_rate_init': [0.1, 1e-2, 1e-3, 1e-4],
+              'clf__alpha': [1e-2, 1e-3, 1e-4],
+              'clf__epsilon': [1e-4, 1e-6, 1e-8],
+              'clf__learning_rate_init': [1e-3, 1e-4, 1e-6],
               }
 
     cv_test = []
