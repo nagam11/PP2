@@ -12,36 +12,56 @@ library(data.table)
 library(cowplot)
 ```
 
-## Read data
+## Vector Sizes
 ```{r}
 mean_stats_dt <- fread("../../results/mean_stats_data_table.tsv")
 mean_stats_dt
-```
 
-### Tidy data
-```{r}
 stats_lf <- melt(mean_stats_dt, id.vars = c("vector_size", "outer_split", "validation"),
                  measure.vars = c("AUC", "Accuracy", "Precision", "Recall"), variable.name = "metric")
 summary <- stats_lf[, .(mean = mean(value), median = median(value), sd = sd(value)), by = c("vector_size", "metric", "validation")]
-```
 
-## Boxplots
-
-```{r}
 ggplot(stats_lf, aes(factor(vector_size), value, col = validation)) +
   geom_boxplot() + 
   scale_y_continuous(limits = c(0,1)) +
   labs(x = "vector size") +
   facet_wrap(~metric) +
   scale_color_brewer(palette = "Set2")
-```
 
-## Line Plots
-```{r}
 ggplot(summary, aes(vector_size, median, col = validation)) +
   geom_point() + geom_line() +
   #geom_errorbar(aes(ymin=median-sd, ymax=median+sd), width=.2) +
   scale_y_continuous(limits = c(0,1)) +
   facet_wrap(~metric) +
   scale_color_brewer(palette = "Set2")
+```
+
+## Number of Layers
+```{r}
+mean_stats_dt <- fread("../../results/many_layers/mean_stats_dt.tsv")
+mean_stats_dt
+
+stats_lf <- melt(mean_stats_dt, id.vars = c("vector_size", "outer_split", "validation"),
+                 measure.vars = c("AUC", "Accuracy", "Precision", "Recall"), variable.name = "metric")
+# rename number of layers
+setnames(stats_lf, "vector_size", "layers")
+stats_lf[, layers := gsub(", ", "-", layers)]
+
+summary <- stats_lf[, .(mean = mean(value), median = median(value), sd = sd(value)), by = c("layers", "metric", "validation")]
+
+ggplot(stats_lf, aes(factor(layers), value, col = validation)) +
+  geom_violin() + 
+  scale_y_continuous(limits = c(0,1)) +
+  labs(x = "layers") +
+  facet_wrap(~metric) +
+  scale_color_brewer(palette = "Set2") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+ggplot(summary, aes(layers, median, col = validation)) +
+  geom_point() + geom_line() +
+  #geom_errorbar(aes(ymin=median-sd, ymax=median+sd), width=.2) +
+  scale_y_continuous(limits = c(0,1)) +
+  facet_wrap(~metric) +
+  scale_color_brewer(palette = "Set2") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
 ```

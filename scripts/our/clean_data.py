@@ -3,6 +3,8 @@ import json
 import pprint
 import pandas as pd
 import numpy as np
+import argparse
+import re
 
 
 def entry_to_np_array(entry):
@@ -12,7 +14,7 @@ def entry_to_np_array(entry):
     return np.array(entry["__ndarray__"], dtype=entry["dtype"])
 
 
-def extract_data(json_file, outer_fold, vector_size):
+def extract_data(json_file, outer_fold=0, vector_size=0):
 
     with open(json_file) as json_data:
         d = json.load(json_data)
@@ -55,14 +57,32 @@ def extract_data(json_file, outer_fold, vector_size):
 
     return total_df
 
+parser = argparse.ArgumentParser(description='Clean JSON data dump of scikit-learn output')
+parser.add_argument('-d', '--data_dir')
+parser.add_argument('-o', '--results_tsv')
+args = parser.parse_args()
 
-print(os.getcwd())
+
+#print(os.getcwd())
 all_df = []
-for vsize in ['25', '50', '100', '125', '200']:
-    for fold in range(10):
-        json_file = '../../results/{}/cv_result_{}_outer_split_{}.json'.format(vsize, vsize, fold)
-        print(json_file)
-        all_df.append(extract_data(json_file, outer_fold=fold, vector_size=vsize))
+# Vector sizes
+#for vsize in ['25', '50', '100', '125', '200']:
+#    for fold in range(10):
+#        json_file = '../../results/{}/cv_result_{}_outer_split_{}.json'.format(vsize, vsize, fold)
+#        print(json_file)
+#        all_df.append(extract_data(json_file, outer_fold=fold, vector_size=vsize))
+
+# Different number of layers
+for json_file in os.listdir(args.data_dir):
+    if not json_file.endswith(".json"):
+        pass
+    json_file = args.data_dir + "/" + json_file
+    print("file:", json_file)
+    outer_fold = re.match(r".* ?_(.*)_.*", json_file).group(1)
+    layers = re.match(r".* ?\((.*)\).*", json_file).group(1)
+    all_df.append(extract_data(json_file, outer_fold=outer_fold, vector_size=layers))
+
 
 complete_df = pd.concat(all_df)
-complete_df.to_csv("../../results/mean_stats_data_table.tsv", sep='\t')
+print(complete_df)
+complete_df.to_csv(args.results_tsv, sep='\t')
