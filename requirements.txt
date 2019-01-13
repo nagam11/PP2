@@ -1,7 +1,0 @@
-tqdm
-gensim
-pyfasta
-numpy
-sklearn
-json_tricks
-matplotlib
