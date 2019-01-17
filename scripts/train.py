@@ -142,6 +142,7 @@ class FeedForwardNet:
         val_accs = []
 
         self.session = tf.Session()
+        saver = tf.train.Saver()
         session = self.session
 
         with session.as_default():
@@ -179,6 +180,7 @@ class FeedForwardNet:
                      'train_accuracy': np.array(train_accs),
                      'val_loss': np.array(val_losses),
                      'val_accuracy': np.array(val_accs)}
+        saver.save(self.session, 'trained_model')
 
 
 layer_types = [tf.nn.relu, tf.nn.relu, tf.nn.relu]
@@ -191,3 +193,4 @@ NN_no_regularization.build(X_train.shape[1], num_classes=y_train.shape[1])
 
 NN_no_regularization.train(X_train, y_train, X_test, y_test, epochs,
                           batch_size=batch_size)
+

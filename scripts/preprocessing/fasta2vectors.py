@@ -1,8 +1,10 @@
 import biovec
 import numpy as np
-
-model = biovec.models.load_protvec("../trained_models/trained.model")
-model.wv.load_word2vec_format(fname="../output/trained.vectors")
+import os
+cwd = os.getcwd()
+print(cwd)
+model = biovec.models.load_protvec("trained_models/trained.model")
+model.wv.load_word2vec_format(fname="output/trained.vectors")
 
 def read_fasta(path):
     """
@@ -84,9 +86,9 @@ def compose_data(path):
 
 
 # Get the data
-X, y = compose_data('../data/ppi_data.fasta')
+X, y = compose_data('data/ppi_data.fasta')
 data = np.append(X, np.vstack(y), axis=1)
-np.save("../output/ppi_as_vec.npy", data)
-load_data = np.load("../output/ppi_as_vec.npy")
+np.save("output/ppi_as_vec.npy", data)
+load_data = np.load("output/ppi_as_vec.npy")
 print(" ----FINISHED----")
 print(load_data)
