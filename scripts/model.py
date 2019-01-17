@@ -2,7 +2,7 @@ import biovec
 
 import numpy as np
 from json_tricks import dumps
-from scripts.reference.ml_sample_code import train_and_optimize
+from scripts.ml_sample_code import train_and_optimize
 
 
 class Model(object):
