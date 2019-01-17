@@ -112,9 +112,12 @@ class Model(object):
 
 
 tr_vecs = {}
-for i in ['25', '50', '75', '100', '125', '150', '200']:
-    model = biovec.models.load_protvec("../../trained_models/trained" + i + ".model")
-    tr_vecs.update({i: model.wv.load_word2vec_format(fname="../../output/trained" + i + ".vectors")})
+#for i in ['25', '50', '75', '100', '125', '150', '200']:
+for i in ['25']:
+    model = biovec.models.load_protvec("../trained_models/trained.model")
+    tr_vecs.update({i: model.wv.load_word2vec_format(fname="../output/trained.vectors")})
+#model = biovec.models.load_protvec("../trained_models/trained.model")
+#model.wv.load_word2vec_format(fname="../output/trained.vectors")
 
-model = Model('../../data/ppi_data.fasta', tr_vecs)
+model = Model('../data/ppi_data.fasta', tr_vecs)
 model.train()

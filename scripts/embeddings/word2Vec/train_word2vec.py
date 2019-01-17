@@ -5,7 +5,7 @@ from pathlib import Path
 from argparse import ArgumentParser
 from gensim.models.word2vec import LineSentence, Word2Vec
 
-from scripts.word2Vec.wv_utils import make_corpus, save_w2v_vectors_file
+from scripts.embeddings.word2Vec.wv_utils import make_corpus, save_w2v_vectors_file
 
 
 def main():

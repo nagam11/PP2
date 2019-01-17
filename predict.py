@@ -1,5 +1,7 @@
 import argparse
 import os
+import tensorflow as tf
+import numpy as np
 
 parser = argparse.ArgumentParser(description='Predict ppi bindings')
 parser.add_argument('-i', '--input_file', required=True)
@@ -28,6 +30,19 @@ with open(input_file) as file:
             protein_sequences.append(line)
         i = i + 1
 
+# Configure GPU not to use all memory
+config = tf.ConfigProto()
+config.gpu_options.allow_growth = True
+
+# Start a new session and initialize variables
+sess = tf.InteractiveSession(config=config)
+sess.run(tf.global_variables_initializer())
+
+# TODO: set up network Prediction
+#score =
+#predictions = tf.nn.softmax()
+#predictions = tf.argmax(predictions, 1)
+
 # Write to output file
 with open(output_file, "w") as file:
     for i in range(len(proteins_names)):
@@ -41,10 +56,20 @@ with open(output_file, "w") as file:
         for j in range(3):
             file.write(protein_sequences[i][j] + "\tn/a\tn/a\n")
 
-        # TODO Run prediction
+        # TODO Run predictions
+        # Create ngrams from sequence for inputs
+        '''X, _ = 
+        for j in range(len(X)):
+            score, prediction = sess.run([scores, predictions], feed_dict={inputs: X_test[i, None]})
+            if prediction == 1:
+                pred = '+'
+            else:
+                pred = '-'
+            # Write predicted bindings
+            file.write("" + "\t" + pred + "\t" + round(max(score), 2) + "\n")
+        '''
 
-        # Write predicted bindings
-        for a in range(3, len(protein_sequences[i])-3):
+        for a in range(3, len(protein_sequences[i]) - 3):
             file.write(protein_sequences[i][a] + "\t" + "" + "\t" + "" + "\n")
 
         # Note: 3-gram model does not allow us to predict the last 3 residues
@@ -55,5 +80,3 @@ with open(output_file, "w") as file:
 
 
 print("\nPrediction has finished. Please check output files.")
-
-
