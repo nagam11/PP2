@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 import numpy as np
 import torch.utils.data as utils
+import os
 import torchvision
 import torchvision.transforms as transforms
 
@@ -27,7 +28,9 @@ test_dataset = torchvision.datasets.MNIST(root='../../data',
                                           train=False, 
                                           transform=transforms.ToTensor())'''
 
-data = np.load("../../output/ppi_as_vec.npy")
+cwd = os.getcwd()
+print(cwd)
+data = np.load("scripts/ffnn/ppi_as_vec.npy")
 tensor_x = data[:,:-1]
 tensor_y = data[:,-1:]
 
@@ -88,7 +91,7 @@ criterion = nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)  
 
 # Train the model
-total_step = len(train_loader)
+'''total_step = len(train_loader)
 for epoch in range(num_epochs):
     for i, (x, y) in enumerate(train_loader):
         # Move tensors to the configured device
@@ -123,4 +126,4 @@ with torch.no_grad():
     print('Accuracy {} %'.format(100 * correct / total))
 
 # Save the model checkpoint
-torch.save(model.state_dict(), 'model.ckpt')
+torch.save(model.state_dict(), 'model.ckpt')'''
