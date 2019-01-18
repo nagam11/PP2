@@ -1,7 +1,6 @@
 **/__pycache__
 scripts/corpus.txt
-output
-data
+data/ppi_data.fasta
 venv
 .idea
 .ipynb_checkpoints
