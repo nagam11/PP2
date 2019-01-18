@@ -1,26 +1,46 @@
-import biovec
 import numpy as np
 import umap
+from matplotlib import pyplot as plt
 
-import scripts.preprocessing.fasta2vectors as f2v
+import scripts.preprocessing.utils as pp
 
-ppi_file = 'data/ppi_data.fasta'
-fasta = f2v.read_fasta(ppi_file)
-print(fasta)
+ppi_file = '../../../data/ppi_data.fasta'
+fasta = pp.read_fasta(ppi_file)
 
-aas = {'A':1, 'R':2, 'N':3, 'D':4, 'C':5, 'E':6, 'Q':7, 'G':8, 'H':9, 'I':10, 'L':11, 'K':12, 'M':13,
-       'F':14, 'P':15, 'S':16, 'T':17, 'W':18, 'Y':19, 'V':20}
+aas = {'A': 1, 'R': 2, 'N': 3, 'D': 4, 'C': 5, 'E': 6, 'Q': 7, 'G': 8, 'H': 9, 'I': 10, 'L': 11, 'K': 12, 'M': 13,
+       'F': 14, 'P': 15, 'S': 16, 'T': 17, 'W': 18, 'Y': 19, 'V': 20}
 
-def sequence2numbers(sequence):
-    '''
-    :param sequence:
-    :return: number representation of sequence as number
-    '''
 
-    number_seq = np.empty((len(sequence)), dtype=int)
+def max_length(sequences):
+    """
+    :param sequences: contents of fasta file as dictionary
+    :return: length of longest sequence in fasta
+    """
+    m = 0
+    for seq in sequences:
+        if len(seq) > m:
+            m = len(seq)
+    return m
+
+
+def sequence2numbers(sequence, max_length):
+    """
+    :param max_length: length of output vectors (length of longest sequence)
+    :param sequence: protein sequence
+    :return: numpy array of max_length  with number representation of sequence as number
+    """
+    number_seq = np.zeros(max_length, dtype=float)
     for i, x in enumerate(sequence):
-        number_seq[i] = aas[x]
+        number_seq[i] = aas[x] if x in aas else 0
+    return number_seq
 
 
-print(sequence2numbers(fasta[1]))
+seqs = [s['seq'] for s in fasta]
+m_len = max_length(seqs)
+seq_vecs = np.array([sequence2numbers(s, m_len) for s in seqs])
+embedded = umap.UMAP().fit_transform(seq_vecs)
+
+plt.scatter(embedded[:,0], embedded[:,1])
+plt.savefig('../../../results/padded_umap.png')
+
 
