@@ -35,12 +35,33 @@ def sequence2numbers(sequence, max_length):
     return number_seq
 
 
+def bind2numbers(binding):
+    """
+    :param binding: string of binding positions
+    :return: translation into 1 (+) and 0 (-)
+    """
+    n = np.zeros(len(binding))
+    for i, x in enumerate(binding):
+        if x == '+':
+            n[i] = 1
+    return n
+
+
+# protein sequences
 seqs = [s['seq'] for s in fasta]
 m_len = max_length(seqs)
 seq_vecs = np.array([sequence2numbers(s, m_len) for s in seqs])
 embedded = umap.UMAP().fit_transform(seq_vecs)
 
+# TODO: figure out how to add labels
+# binding sequences
+# bindings = [bind2numbers(s['bind']) for s in fasta]
+# np.append(embedded, np.vstack(bindings), axis=1)
+
+np.save("padded_vectors.npy", seq_vecs)
+np.save("padded_vectors_umap.npy", embedded)
+
 plt.scatter(embedded[:,0], embedded[:,1])
-plt.savefig('../../../results/padded_umap.png')
+plt.savefig('padded_umap.png')
 
 
