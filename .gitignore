@@ -1,5 +1,6 @@
 **/__pycache__
 scripts/corpus.txt
+output
 data
 venv
 .idea
