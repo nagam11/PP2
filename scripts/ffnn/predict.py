@@ -105,8 +105,9 @@ with open(output_file, "w") as file:
         model.eval()
         # pass it through the model
         X_test = compose_data(protein_sequences[i])
-        prediction = model(X_test)
-
+        prediction = model(torch.from_numpy(np.float32(X_test)))
+        _, predicted = torch.max(prediction, 1)
+        print(predicted)
 
         for a in range(3, len(protein_sequences[i]) - 3):
             file.write(protein_sequences[i][a] + "\t" + "" + "\t" + "" + "\n")
