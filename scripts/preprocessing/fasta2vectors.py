@@ -9,9 +9,9 @@ model.wv.load_word2vec_format(fname="../../output/trained.vectors")
 # Get the data
 X, y = pp.compose_data('../../data/ppi_data.fasta', model)
 data = np.append(X, np.vstack(y), axis=1)
-np.save("../../output/ppi_as_vec.npy", data)
+np.save("ppi_as_vec.npy", data)
 
 print('test loading')
-load_data = np.load("../../output/ppi_as_vec.npy")
+load_data = np.load("ppi_as_vec.npy")
 print(load_data)
 print(" ----FINISHED----")
