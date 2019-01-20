@@ -1,3 +1,6 @@
+import sklearn.metrics
+from sklearn.metrics import roc_auc_score
+import matplotlib.pyplot as plt
 import torch
 import torch.nn as nn
 import numpy as np
@@ -6,7 +9,7 @@ import torch.utils.data as utils
 # Device configuration
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-# Hyper-parameters 
+# Hyper-parameters
 input_size = 100
 hidden_size = 100
 num_classes = 2
@@ -36,12 +39,12 @@ y_test = torch.from_numpy(np.int_(y_test.ravel()))
 train_dataset = utils.TensorDataset(X_train, y_train)
 test_dataset = utils.TensorDataset(X_test, y_test)
 
-train_loader = torch.utils.data.DataLoader(dataset=train_dataset, 
-                                           batch_size=batch_size, 
+train_loader = torch.utils.data.DataLoader(dataset=train_dataset,
+                                           batch_size=batch_size,
                                            shuffle=True)
 
-test_loader = torch.utils.data.DataLoader(dataset=test_dataset, 
-                                          batch_size=batch_size, 
+test_loader = torch.utils.data.DataLoader(dataset=test_dataset,
+                                          batch_size=batch_size,
                                           shuffle=False)
 
 
@@ -56,7 +59,7 @@ class NeuralNet(nn.Module):
         self.relu2 = nn.LeakyReLU(0.2, inplace=True)
         #self.relu2 = nn.ReLU()
         self.fc3 = nn.Linear(hidden_size, num_classes)
-    
+
     def forward(self, x):
         out = self.fc1(x)
         out = self.relu(out)
@@ -94,22 +97,27 @@ def train_and_test():
                 print ('Epoch [{}/{}], Step [{}/{}], Loss: {:.4f}'
                        .format(epoch+1, num_epochs, i+1, total_step, loss.item()))
 
-    # Test the model
-    # In test phase, we don't need to compute gradients (for memory efficiency)
+    # Test the model and compute metrics
     with torch.no_grad():
-        correct = 0
-        total = 0
-        for X_test, y_test in test_loader:
-            y_test = y_test.to(device)
-            outputs = model(X_test)
-            _, predicted = torch.max(outputs.data, 1)
-            total += y_test.size(0)
-            correct += (predicted == y_test).sum().item()
+        model_predictions = []
+        labels = []
 
-        print('Accuracy {} %'.format(100 * correct / total))
+        for X_test, y_test in test_loader:
+            outputs = model(X_test)
+            labels.extend(y_test)
+            model_prediction = list(torch.max(outputs, 1)[1].detach().cpu().numpy())
+            model_predictions.extend(model_prediction)
+
+        print("Test Accuracy: " + str(sklearn.metrics.accuracy_score(labels, model_predictions)))
+        print("Test Precision: " + str(sklearn.metrics.precision_score(labels, model_predictions)))
+        print("Test Recall: " + str(sklearn.metrics.recall_score(labels, model_predictions)))
+        print("Test F1 Score: " + str(sklearn.metrics.f1_score(labels, model_predictions)))
+        print("Test Confusion Matrix: " + str(sklearn.metrics.confusion_matrix(labels, model_predictions)))
+        print("Test AUC: " + str(roc_auc_score(labels, model_predictions)))
 
     # Save the model checkpoint
     torch.save(model.state_dict(), 'model.ckpt')
 
 
 #train_and_test()
+
