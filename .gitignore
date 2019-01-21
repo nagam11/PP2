@@ -4,6 +4,6 @@ data/ppi_data.fasta
 venv
 .idea
 .ipynb_checkpoints
-
+model.ckpt
 .Rproj.user
 *.Rproj

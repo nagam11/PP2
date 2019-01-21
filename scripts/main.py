@@ -1,5 +1,6 @@
 import sklearn.metrics
 from sklearn.metrics import roc_auc_score
+from torch.utils.data.sampler import Sampler
 import matplotlib.pyplot as plt
 import torch
 import torch.nn as nn
@@ -13,7 +14,7 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 input_size = 100
 hidden_size = 100
 num_classes = 2
-num_epochs = 1000
+num_epochs = 50
 batch_size = 100
 learning_rate = 0.001
 
@@ -38,6 +39,20 @@ y_test = torch.from_numpy(np.int_(y_test.ravel()))
 # Transform to pytorch tensor
 train_dataset = utils.TensorDataset(X_train, y_train)
 test_dataset = utils.TensorDataset(X_test, y_test)
+
+'''# Sampler for DataLoader
+#class_sample_counts = [65365, 24176]
+class_sample_counts = np.array([len(np.where(y_train == t)[0]) for t in np.unique(y_train)])
+weights = 1. / torch.tensor(class_sample_counts, dtype=torch.float)
+samples_weights = weights[y_train]
+sampler = torch.utils.data.sampler.WeightedRandomSampler(
+                                weights=samples_weights,
+                                num_samples=len(samples_weights),
+                                replacement=True)
+train_loader = torch.utils.data.DataLoader(dataset=train_dataset,
+                                           batch_size=batch_size,
+                                           sampler=sampler)                                
+'''
 
 train_loader = torch.utils.data.DataLoader(dataset=train_dataset,
                                            batch_size=batch_size,
@@ -72,6 +87,11 @@ class NeuralNet(nn.Module):
 model = NeuralNet(input_size, hidden_size, num_classes).to(device)
 
 # Loss and optimizer
+''' Class Weights for calculating loss function
+weights = [0.4, 0.9]
+class_weights = torch.FloatTensor(weights)
+criterion = nn.CrossEntropyLoss(weight=class_weights)
+'''
 criterion = nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
@@ -114,10 +134,11 @@ def train_and_test():
         print("Test F1 Score: " + str(sklearn.metrics.f1_score(labels, model_predictions)))
         print("Test Confusion Matrix: " + str(sklearn.metrics.confusion_matrix(labels, model_predictions)))
         print("Test AUC: " + str(roc_auc_score(labels, model_predictions)))
+        print(str(sklearn.metrics.classification_report(labels, model_predictions, labels=[0, 1])))
 
     # Save the model checkpoint
-    torch.save(model.state_dict(), 'model.ckpt')
+    torch.save(model.state_dict(), 'model_True_False.ckpt')
 
 
-#train_and_test()
+train_and_test()
 
