@@ -2,6 +2,7 @@ import sklearn.metrics
 from sklearn.metrics import roc_auc_score
 import torch
 import torch.nn as nn
+import numpy as np
 import pprint
 
 
@@ -36,11 +37,13 @@ def train(model, data_loader, device, num_epochs=50, learning_rate=0.001):
     epochs = []
     losses = []
     accuracies = []
+    num_batch = len(list(enumerate(data_loader)))
 
     # Train the model
     total_step = len(data_loader)
     for epoch in range(num_epochs):
-        tmp_losses = 0
+        tmp_loss = 0
+        tmp_acc = 0
         for i, (x, y) in enumerate(data_loader):
             y = y.to(device)
 
@@ -53,17 +56,17 @@ def train(model, data_loader, device, num_epochs=50, learning_rate=0.001):
             loss.backward()
             model.optimizer.step()
 
-            tmp_losses += loss.item()
+            tmp_loss += loss.item()
+            tmp_acc += sklearn.metrics.accuracy_score(
+                y.detach().numpy(), np.argmax(outputs.detach().numpy(), axis=1))
 
-            if (i + 1) % 100 == 0:
-                print('Epoch [{}/{}], Step [{}/{}], Loss: {:.4f}'
-                      .format(epoch + 1, num_epochs, i + 1, total_step, loss.item()))
+        tmp_acc /= num_batch
+        print(f"epoch: {epoch}\n loss: {tmp_loss}\n accuracy: {tmp_acc}")
         epochs.append(epoch + 1)
-        print(tmp_losses)
-        print(loss.item())
-        losses.append(tmp_losses)
+        losses.append(tmp_loss)
+        accuracies.append(tmp_acc)
 
-    return epochs, losses
+    return epochs, losses, accuracies
 
 
 def predict(model, data_loader):

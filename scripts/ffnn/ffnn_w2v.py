@@ -61,10 +61,21 @@ test_loader = torch.utils.data.DataLoader(dataset=test_dataset,
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 model = ffnn.NeuralNet(input_size=batch_size, hidden_size=100, num_classes=2).to(device)
-epochs, losses = ffnn.train(model, train_loader, num_epochs=50, device=device)
+epochs, losses, accuracies = ffnn.train(model, train_loader, num_epochs=20, device=device)
+
+# plot losses
 plt.plot(epochs, losses)
+plt.xlabel("Epochs")
+plt.ylabel("Loss")
 plt.show()
-ffnn.predict(model, train_loader)
+
+# plot accuracy
+plt.plot(epochs, accuracies)
+plt.xlabel("Epochs")
+plt.ylabel("Accuracy")
+plt.show()
+
+metrics = ffnn.predict(model, train_loader)
 
 # Save the model checkpoint
 torch.save(model.state_dict(), args.model)
