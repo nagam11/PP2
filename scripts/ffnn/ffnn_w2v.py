@@ -3,38 +3,17 @@ from torch.utils.data.sampler import Sampler
 import matplotlib.pyplot as plt
 import torch
 import numpy as np
-import torch.utils.data as utils
-import scripts.ffnn.model as ffnn
-import pprint
 
+import scripts.ffnn.model as ffnn
 
 parser = argparse.ArgumentParser(description='FFNN models')
 parser.add_argument('-p', '--ppi_protvecs', required=True)
 parser.add_argument('-m', '--model', required=True)
+parser.add_argument('-e', 'num_epochs', required=True)
 args = parser.parse_args()
 
-# Load data
-data = np.load(args.ppi_protvecs)
-tensor_x = data[:, :-1]
-tensor_y = data[:, -1:]
 
-# randomise and split
-N = int(len(tensor_y))
-test_size = int(N / 10)
-data_ixs = np.random.permutation(np.arange(N))
-# training set
-train_ix = data_ixs[test_size:]
-X_train = torch.from_numpy(np.float32(tensor_x[train_ix, :]))
-y_train = torch.from_numpy(np.int_(tensor_y[train_ix, :].ravel()))
-# test set
-test_ix = data_ixs[:test_size]
-X_test = torch.from_numpy(np.float32(tensor_x[test_ix, :]))
-y_test = torch.from_numpy(np.int_(tensor_y[test_ix, :].ravel()))
-
-# Transform to pytorch tensor
-train_dataset = utils.TensorDataset(X_train, y_train)
-test_dataset = utils.TensorDataset(X_test, y_test)
-
+train_dataset, test_dataset = ffnn.load_and_split(args.ppi_protvecs)
 '''# Sampler for DataLoader
 #class_sample_counts = [65365, 24176]
 class_sample_counts = np.array([len(np.where(y_train == t)[0]) for t in np.unique(y_train)])
@@ -49,6 +28,7 @@ train_loader = torch.utils.data.DataLoader(dataset=train_dataset,
                                            sampler=sampler)                                
 '''
 batch_size = 100
+dimensions = train_dataset.tensors[0].shape[1]
 train_loader = torch.utils.data.DataLoader(dataset=train_dataset,
                                            batch_size=batch_size,
                                            shuffle=True)
@@ -57,11 +37,10 @@ test_loader = torch.utils.data.DataLoader(dataset=test_dataset,
                                           batch_size=batch_size,
                                           shuffle=False)
 
-
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-model = ffnn.NeuralNet(input_size=batch_size, hidden_size=100, num_classes=2).to(device)
+model = ffnn.NeuralNet(input_size=dimensions).to(device)
 
-epochs, losses, accuracies = ffnn.train(model, train_loader, test_loader, num_epochs=1000, device=device)
+epochs, losses, accuracies = ffnn.train(model, train_loader, test_loader, num_epochs=args.num_epochs, device=device)
 
 # plot losses
 training, = plt.plot(epochs, losses['train'], label='training')
@@ -82,7 +61,7 @@ plt.ylabel("Accuracy")
 plt.show()
 
 metrics = ffnn.predict(model, train_loader)
+print(metrics)
 
 # Save the model checkpoint
 torch.save(model.state_dict(), args.model)
-
