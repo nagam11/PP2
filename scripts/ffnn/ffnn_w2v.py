@@ -18,19 +18,18 @@ data = np.load(args.ppi_protvecs)
 tensor_x = data[:, :-1]
 tensor_y = data[:, -1:]
 
+# randomise and split
 N = int(len(tensor_y))
-test_size = int(N/10)
+test_size = int(N / 10)
 data_ixs = np.random.permutation(np.arange(N))
-
-X_test = tensor_x[data_ixs[:test_size], :]
-y_test = tensor_y[data_ixs[:test_size], :]
-X_train = tensor_x[data_ixs[test_size:], :]
-y_train = tensor_y[data_ixs[test_size:], :]
-
-X_train = torch.from_numpy(np.float32(X_train))
-y_train = torch.from_numpy(np.int_(y_train.ravel()))
-X_test = torch.from_numpy(np.float32(X_test))
-y_test = torch.from_numpy(np.int_(y_test.ravel()))
+# training set
+train_ix = data_ixs[test_size:]
+X_train = torch.from_numpy(np.float32(tensor_x[train_ix, :]))
+y_train = torch.from_numpy(np.int_(tensor_y[train_ix, :].ravel()))
+# test set
+test_ix = data_ixs[:test_size]
+X_test = torch.from_numpy(np.float32(tensor_x[test_ix, :]))
+y_test = torch.from_numpy(np.int_(tensor_y[test_ix, :].ravel()))
 
 # Transform to pytorch tensor
 train_dataset = utils.TensorDataset(X_train, y_train)
@@ -53,7 +52,7 @@ batch_size = 100
 train_loader = torch.utils.data.DataLoader(dataset=train_dataset,
                                            batch_size=batch_size,
                                            shuffle=True)
-
+# loader redundant?
 test_loader = torch.utils.data.DataLoader(dataset=test_dataset,
                                           batch_size=batch_size,
                                           shuffle=False)
@@ -61,16 +60,23 @@ test_loader = torch.utils.data.DataLoader(dataset=test_dataset,
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 model = ffnn.NeuralNet(input_size=batch_size, hidden_size=100, num_classes=2).to(device)
-epochs, losses, accuracies = ffnn.train(model, train_loader, num_epochs=20, device=device)
+
+epochs, losses, accuracies = ffnn.train(model, train_loader, test_loader, num_epochs=1000, device=device)
 
 # plot losses
-plt.plot(epochs, losses)
+training, = plt.plot(epochs, losses['train'], label='training')
+validation, = plt.plot(epochs, losses['validation'], label='validation')
+plt.legend(handles=[training, validation])
+plt.title("Loss over epochs for FFNN")
 plt.xlabel("Epochs")
 plt.ylabel("Loss")
 plt.show()
 
 # plot accuracy
-plt.plot(epochs, accuracies)
+training, = plt.plot(epochs, accuracies['train'], label='training')
+validation, = plt.plot(epochs, accuracies['validation'], label='validation')
+plt.legend(handles=[training, validation])
+plt.title("Accuracy over epochs for FFNN on Protvec")
 plt.xlabel("Epochs")
 plt.ylabel("Accuracy")
 plt.show()

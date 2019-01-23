@@ -32,19 +32,26 @@ class NeuralNet(nn.Module):
         return out
 
 
-def train(model, data_loader, device, num_epochs=50, learning_rate=0.001):
+def train(model, train_data_loader, val_data_loader, device, num_epochs=50):
 
     epochs = []
-    losses = []
-    accuracies = []
-    num_batch = len(list(enumerate(data_loader)))
+    losses ={'train': [], 'validation': []}
+    accuracies = {'train': [], 'validation': []}
+    N_train = train_data_loader.dataset.tensors[0].shape[0]
+    N_val = val_data_loader.dataset.tensors[0].shape[0]
 
-    # Train the model
-    total_step = len(data_loader)
+    # Train and Validate
     for epoch in range(num_epochs):
+
+        print(f"epoch: {epoch + 1}")
+
+        ''' TRAINING '''
         tmp_loss = 0
-        tmp_acc = 0
-        for i, (x, y) in enumerate(data_loader):
+        predictions = []
+        labels = []
+
+        for i, (x, y) in enumerate(train_data_loader):
+
             y = y.to(device)
 
             # Forward pass
@@ -56,15 +63,41 @@ def train(model, data_loader, device, num_epochs=50, learning_rate=0.001):
             loss.backward()
             model.optimizer.step()
 
+            # update training loss and prediction
             tmp_loss += loss.item()
-            tmp_acc += sklearn.metrics.accuracy_score(
-                y.detach().numpy(), np.argmax(outputs.detach().numpy(), axis=1))
+            predictions.extend(torch.max(outputs, 1)[1].detach().numpy())
+            labels.extend(y.detach().numpy())
 
-        tmp_acc /= num_batch
-        print(f"epoch: {epoch}\n loss: {tmp_loss}\n accuracy: {tmp_acc}")
+        # update total loss and accuracy
+        losses['train'].append(tmp_loss/N_train)
+        acc = sklearn.metrics.accuracy_score(labels, predictions)
+        accuracies['train'].append(acc)
+
+        print(f"train loss: {tmp_loss/N_train}\ttrain accuracy: {acc}")
+
+        ''' VALIDATION '''
+        tmp_loss = 0
+        predictions = []
+        labels = []
+
+        for i, (x, y) in enumerate(val_data_loader):
+
+            # predict
+            outputs = model(x)
+            loss = model.criterion(outputs, y)
+
+            # update validation loss and accuracy
+            tmp_loss += loss.item()
+            predictions.extend(torch.max(outputs, 1)[1].detach().numpy())
+            labels.extend(y.detach().numpy())
+
+        losses['validation'].append(tmp_loss/N_val)
+        acc = sklearn.metrics.accuracy_score(labels, predictions)
+        accuracies['validation'].append(acc)
+
+        print(f"val loss: {tmp_loss/N_val}\tval accuracy: {acc}")
+
         epochs.append(epoch + 1)
-        losses.append(tmp_loss)
-        accuracies.append(tmp_acc)
 
     return epochs, losses, accuracies
 
@@ -78,7 +111,7 @@ def predict(model, data_loader):
         for X, y in data_loader:
             outputs = model(X)
             labels.extend(y)
-            model_prediction = list(torch.max(outputs, 1)[1].detach().cpu().numpy())
+            model_prediction = list(torch.max(outputs, 1)[1].detach().numpy())
             model_predictions.extend(model_prediction)
 
         metrics = {"accuracy": sklearn.metrics.accuracy_score(labels, model_predictions),
@@ -86,11 +119,6 @@ def predict(model, data_loader):
                    "recall": sklearn.metrics.recall_score(labels, model_predictions),
                    "F1": sklearn.metrics.f1_score(labels, model_predictions),
                    "AUC": roc_auc_score(labels, model_predictions)}
-        pprint.pprint(metrics)
         confusion = sklearn.metrics.confusion_matrix(labels, model_predictions)
-
-        report = str(sklearn.metrics.classification_report(labels, model_predictions,
-                                                           labels=[0, 1], target_names=["-", "+"]))
-        print(report)
 
         return metrics, confusion
