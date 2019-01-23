@@ -1,0 +1,100 @@
+Prediction followed by Target @ Step 0
+====================================================================================================
+- - - - - - - - - SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START - - - - - - - - - SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - + + + + - - - - - - - - - - - - - - - -
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - + - - + - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+- - - - - - - - - - - - - - - - - SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - SEQUENCE_END - - - - - - - SEQUENCE_END - SEQUENCE_END
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - + + + + + - - - - - - - - - - -
+
+- - - - - - - - - - - SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START - SEQUENCE_START SEQUENCE_START - - - - SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+- - - - - - - - - - - - - - SEQUENCE_END SEQUENCE_END - SEQUENCE_END SEQUENCE_END - SEQUENCE_END SEQUENCE_END SEQUENCE_END SEQUENCE_END SEQUENCE_END SEQUENCE_END - - SEQUENCE_END SEQUENCE_END SEQUENCE_END SEQUENCE_END - - - SEQUENCE_END SEQUENCE_END SEQUENCE_END SEQUENCE_END SEQUENCE_END - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - + - - - - -
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - + - - - - - - - - - - - - - + - - - + - - + - - - - - - - - - - + + + + + + - - + +
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - + - - + + - + + + - + + + + +
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - + - - + + +
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - + + + + + + - + - + - + - - - + + + + + + - - - - - - - - - - - - + +
+
+- - - - - - SEQUENCE_END SEQUENCE_END - - - SEQUENCE_END - - - - - - - SEQUENCE_END - - - - - - SEQUENCE_END - - - - - - - SEQUENCE_END SEQUENCE_END - - - - - - SEQUENCE_END SEQUENCE_END - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - + - - + + - + + + - + + - + + + - + + + - + + - - + + + + + + + + + + + - + + - -
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - + + - - - - - - - - + + + + + + - - + - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - SEQUENCE_START - - - SEQUENCE_START SEQUENCE_START SEQUENCE_START - - - - - -
+- - - - + + + + + - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - + - + - - + + + +
+
+- - SEQUENCE_END - SEQUENCE_END SEQUENCE_END - - - - - - SEQUENCE_START SEQUENCE_START SEQUENCE_END SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START SEQUENCE_START
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+- - - - - - - - - - - - - - - - - - - SEQUENCE_START - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - + - + + - - - - - - - - - - - -
+
+- - - - - - - - - - - - - - - - - - - - - - - - SEQUENCE_START SEQUENCE_START SEQUENCE_START - - SEQUENCE_START SEQUENCE_START - SEQUENCE_START SEQUENCE_START SEQUENCE_START - - - - - - - - SEQUENCE_START SEQUENCE_START SEQUENCE_START - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - + + + + + - - - - - - - - - - - - - - - - - - - - - - - - - - - - - + - - - - - - - - - - -
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - + + + + - - - - - - - - - - - - - + - + + + + + + + + + + + +
+
+- - - - - - - - - - - - - - - - SEQUENCE_END SEQUENCE_END - SEQUENCE_END SEQUENCE_END SEQUENCE_END SEQUENCE_END SEQUENCE_END SEQUENCE_END SEQUENCE_END SEQUENCE_END - - SEQUENCE_END SEQUENCE_END SEQUENCE_END - SEQUENCE_END SEQUENCE_END - - SEQUENCE_END SEQUENCE_END SEQUENCE_END SEQUENCE_END SEQUENCE_END SEQUENCE_END - - SEQUENCE_END - - -
+- - - - - - - - - - - - - - - - - - - - - + - - - - - - - - - - - - - - - - - - - + - - - + + + -
+
+SEQUENCE_END SEQUENCE_END SEQUENCE_END SEQUENCE_END SEQUENCE_END SEQUENCE_END SEQUENCE_END SEQUENCE_END SEQUENCE_END SEQUENCE_END SEQUENCE_END SEQUENCE_END SEQUENCE_END SEQUENCE_END SEQUENCE_END SEQUENCE_END SEQUENCE_END SEQUENCE_END SEQUENCE_END SEQUENCE_END SEQUENCE_END SEQUENCE_END SEQUENCE_END SEQUENCE_END SEQUENCE_END SEQUENCE_END SEQUENCE_END SEQUENCE_END SEQUENCE_END SEQUENCE_END SEQUENCE_END SEQUENCE_END SEQUENCE_END SEQUENCE_END SEQUENCE_END SEQUENCE_END SEQUENCE_END SEQUENCE_END SEQUENCE_END SEQUENCE_END SEQUENCE_END SEQUENCE_END SEQUENCE_END SEQUENCE_END SEQUENCE_END SEQUENCE_END SEQUENCE_END SEQUENCE_END SEQUENCE_END
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- + + + + - + + + - + + - - + + - + - - + + + - + + + - + + + + + + + + + + + + - + + + + + + + +
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - + + + - - + + + + + + - + + + + + + + - + + + + + + + + + + + + + + + - + + - + + - -
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - + + + +
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - + + - + + + + + + - + + -
+
+====================================================================================================
+
