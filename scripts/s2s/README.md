@@ -4,7 +4,7 @@
     ``` git clone https://github.com/google/seq2seq.git
         cd seq2seq
 
-# Copy files from this directory to seq2seq directory
+## Copy files from this directory to seq2seq directory
 
 # Install package and dependencies:
 
