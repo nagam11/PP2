@@ -4,23 +4,23 @@
     ``` git clone https://github.com/google/seq2seq.git
         cd seq2seq
 
-#### Copy files from this directory to seq2seq directory
+### Copy files from this directory to seq2seq directory
 
 # Install package and dependencies:
 
-	``` pip3 install -e .
+	pip3 install -e .
 
 if you intend to use a GPU:
 
-    ``` pip3 install tensorflow-gpu
+	pip3 install tensorflow-gpu
 
 otherwise:
 
-    ``` pip3 install tensorflow
+	pip3 install tensorflow
 
 # Then export envars:
 
-	``` export VOCAB_SOURCE=${PATH_TO_S2S_DATA}/nmt_data/train/vocab.sources.txt
+	export VOCAB_SOURCE=${PATH_TO_S2S_DATA}/nmt_data/train/vocab.sources.txt
 		export VOCAB_TARGET=${PATH_TO_S2S_DATA}/nmt_data/train/vocab.targets.txt
 		export TRAIN_SOURCES=${PATH_TO_S2S_DATA}/nmt_data/train/sources.txt
 		export TRAIN_TARGETS=${PATH_TO_S2S_DATA}/nmt_data/train/targets.txt
@@ -36,12 +36,12 @@ otherwise:
 
 # Create a folder structure:
 
-	``` mkdir -p $MODEL_DIR
+	mkdir -p $MODEL_DIR
 		mkdir -p $PRED_DIR
 
 # To train, run:
 
-	``` python3 -m bin.train \
+	python3 -m bin.train \
 			--config_paths="
 			  ./example_configs/nmt_medium.yml,
 			  ./example_configs/train_seq2seq.yml,
@@ -69,11 +69,11 @@ otherwise:
 
 # You can use TensorBoard to vuisualize training process:
 
-	``` tensorboard --logdir $MODEL_DIR
+	tensorboard --logdir $MODEL_DIR
 
 # To predict, run:
   
-	``` python3 -m bin.infer \
+	python3 -m bin.infer \
 			--tasks "
 				- class: DecodeText" \
 			--model_dir $MODEL_DIR \
@@ -86,4 +86,4 @@ otherwise:
 
 # To get the summary, run:
 
-    ``` python3 format_preds.py
+	python3 format_preds.py
