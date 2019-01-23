@@ -1,8 +1,8 @@
 
 # First clone Google Seq2Seq model: 
 
-    ``` git clone https://github.com/google/seq2seq.git
-        cd seq2seq
+	git clone https://github.com/google/seq2seq.git
+	cd seq2seq
 
 ### Copy files from this directory to seq2seq directory
 
