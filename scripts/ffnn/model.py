@@ -39,9 +39,8 @@ class NeuralNet(nn.Module):
 
 
 def train(model, train_data_loader, val_data_loader, device, num_epochs=50):
-
     epochs = []
-    losses ={'train': [], 'validation': []}
+    losses = {'train': [], 'validation': []}
     accuracies = {'train': [], 'validation': []}
     n_train = train_data_loader.dataset.tensors[0].shape[0]
     n_val = val_data_loader.dataset.tensors[0].shape[0]
@@ -57,7 +56,6 @@ def train(model, train_data_loader, val_data_loader, device, num_epochs=50):
         labels = []
 
         for i, (x, y) in enumerate(train_data_loader):
-
             y = y.to(device)
 
             # Forward pass
@@ -75,11 +73,11 @@ def train(model, train_data_loader, val_data_loader, device, num_epochs=50):
             labels.extend(y.detach().numpy())
 
         # update total loss and accuracy
-        losses['train'].append(tmp_loss/n_train)
+        losses['train'].append(tmp_loss / n_train)
         acc = sklearn.metrics.accuracy_score(labels, predictions)
         accuracies['train'].append(acc)
 
-        print(f"train loss: {tmp_loss/n_train}\ttrain accuracy: {acc}")
+        print(f"train loss: {tmp_loss / n_train}\ttrain accuracy: {acc}")
 
         ''' VALIDATION '''
         tmp_loss = 0
@@ -87,7 +85,6 @@ def train(model, train_data_loader, val_data_loader, device, num_epochs=50):
         labels = []
 
         for i, (x, y) in enumerate(val_data_loader):
-
             # predict
             outputs = model(x)
             loss = model.criterion(outputs, y)
@@ -97,11 +94,11 @@ def train(model, train_data_loader, val_data_loader, device, num_epochs=50):
             predictions.extend(torch.max(outputs, 1)[1].detach().numpy())
             labels.extend(y.detach().numpy())
 
-        losses['validation'].append(tmp_loss/n_val)
+        losses['validation'].append(tmp_loss / n_val)
         acc = sklearn.metrics.accuracy_score(labels, predictions)
         accuracies['validation'].append(acc)
 
-        print(f"val loss: {tmp_loss/n_val}\tval accuracy: {acc}")
+        print(f"val loss: {tmp_loss / n_val}\tval accuracy: {acc}")
 
         epochs.append(epoch + 1)
 
@@ -124,41 +121,46 @@ def predict(model, data_loader):
                    "precision": sklearn.metrics.precision_score(labels, model_predictions),
                    "recall": sklearn.metrics.recall_score(labels, model_predictions),
                    "F1": sklearn.metrics.f1_score(labels, model_predictions),
-                   "AUC": roc_auc_score(labels, model_predictions)}
-        confusion = sklearn.metrics.confusion_matrix(labels, model_predictions)
+                   "AUC": roc_auc_score(labels, model_predictions),
+                   'confusion' : sklearn.metrics.confusion_matrix(labels, model_predictions)}
 
-        return metrics, confusion
+        return metrics
 
 
-def load_and_split(ppi_protvec, test_size=None):
+def load_data(ppi_protvec):
     """
     load a numpy array containing Protvec vectors and labels
-    :param test_size: size of test set
     :param ppi_protvec: filename to numpy array with vectors, last column containing labels
-    :return: pytorch datasets for training and testing
+    :return: np arrays for data and labels
     """
 
     data = np.load(ppi_protvec)
-    tensor_x = data[:, :-1]
-    tensor_y = data[:, -1:]
+    return data[:, :-1], data[:, -1:]
 
-    if test_size is None:
-        N = int(len(tensor_y))
-        test_size = int(N / 10)
 
-    # randomise and split
-    data_ixs = np.random.permutation(np.arange(N))
-    # training set
-    train_ix = data_ixs[test_size:]
-    X_train = torch.from_numpy(np.float32(tensor_x[train_ix, :]))
-    y_train = torch.from_numpy(np.int_(tensor_y[train_ix, :].ravel()))
-    # test set
-    test_ix = data_ixs[:test_size]
-    X_test = torch.from_numpy(np.float32(tensor_x[test_ix, :]))
-    y_test = torch.from_numpy(np.int_(tensor_y[test_ix, :].ravel()))
+def create_pytorch_dataset(X, y, batch_size=100):
+    """
+    :param X: data
+    :param y: labels
+    :return: pytorch datasets for training and testing
+    """
 
-    # Transform to pytorch tensor
-    train_dataset = utils.TensorDataset(X_train, y_train)
-    test_dataset = utils.TensorDataset(X_test, y_test)
-
-    return train_dataset, test_dataset
+    train_dataset = utils.TensorDataset(torch.from_numpy(np.float32(X)),
+                                        torch.from_numpy(np.int_(y.ravel())))
+    '''# Sampler for DataLoader
+    #class_sample_counts = [65365, 24176]
+    class_sample_counts = np.array([len(np.where(y_train == t)[0]) for t in np.unique(y_train)])
+    weights = 1. / torch.tensor(class_sample_counts, dtype=torch.float)
+    samples_weights = weights[y_train]
+    sampler = torch.utils.data.sampler.WeightedRandomSampler(
+                                    weights=samples_weights,
+                                    num_samples=len(samples_weights),
+                                    replacement=True)
+    train_loader = torch.utils.data.DataLoader(dataset=train_dataset,
+                                               batch_size=batch_size,
+                                               sampler=sampler)                                
+    '''
+    data_loader = torch.utils.data.DataLoader(dataset=train_dataset,
+                                              batch_size=batch_size,
+                                              shuffle=True)
+    return data_loader
