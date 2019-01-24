@@ -56,7 +56,7 @@ dimensions = compose_data(protein_sequences[0]).shape[1]
 model = ffnn.NeuralNet(input_size=dimensions).to(device)
 
 # Load saved model and set to evaluation mode
-model.load_state_dict(torch.load("scripts/ffnn/ffnn_model.ckpt"))
+model.load_state_dict(torch.load("trained_models/ffnn_model.ckpt"))
 model.eval()
 
 # Write to output file
