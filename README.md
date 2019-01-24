@@ -5,6 +5,21 @@ We provide two different prediction models.
 1. Word2Vec Embeddings with a feed-forward neural network in PyTorch
 2. [Google Seq2Seq Prediction](https://github.com/nagam11/PP2/tree/master/scripts/s2s)
 
+### Running
+
+To run the project, you need to use Python 3.6+. The required dependencies are listed below: 
+
+* torch 
+* torchvision
+* numpy 
+* matplotlib
+* biovec 
+* sklearn 
+
+To install the dependencies run
+
+        pip install -r requirements.txt 
+
 ## Feed-Forward Neural Network
 ### Run Prediction
 To run the protein-protein binding predictions 
@@ -45,13 +60,5 @@ python scripts/ffnn/validation/bootstrapping.py \
 		--test_set=scripts/preprocessing/ppi_vec_test.npy \
 		--model=trained_models/ffnn_model.ckpt \
 		--num_boot=1000
-```
-
-### Dependencies 
-```{python}
-torch 
-numpy 
-biovec 
-sklearn 
 ```
         
