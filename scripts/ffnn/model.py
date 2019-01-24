@@ -125,7 +125,7 @@ def predict(model, data_loader):
                    "recall": sklearn.metrics.recall_score(labels, model_predictions),
                    "F1": sklearn.metrics.f1_score(labels, model_predictions),
                    "AUC": roc_auc_score(labels, model_predictions),
-                   'confusion' : sklearn.metrics.confusion_matrix(labels, model_predictions)}
+                   'confusion': sklearn.metrics.confusion_matrix(labels, model_predictions)}
 
         return metrics
 

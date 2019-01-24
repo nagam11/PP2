@@ -9,7 +9,6 @@ import csv
 
 import scripts.ffnn.model as ffnn
 
-
 parser = argparse.ArgumentParser(description='FFNN models')
 parser.add_argument('-p', '--ppi_protvecs', required=True)
 parser.add_argument('-e', '--num_epochs', type=int, nargs='?', const=50)
@@ -25,17 +24,23 @@ n = X.shape[0]
 test_size = int(n / 10)
 data_ix = np.arange(n)
 
-# Start Bootstrap
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+# train data statistics
 train_losses = []  # shape: (num_boot*num_split, num_epochs)
 val_losses = []
 train_acc = []
 val_acc = []
-test_acc = []  # shape: (num_boot*num_split, )
 
+# test statistics
+test_acc = []  # shape: (num_boot*num_split, )
+test_prec = []
+test_rec = []
+test_f1 = []
+test_auc = []
+
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 for it in range(args.num_boot):
 
-    print(f"Bootstrap iteration {it+1}")
+    print(f"Bootstrap iteration {it + 1}")
     # resample bootstrap data
     boot = resample(data_ix, replace=True, n_samples=n - test_size)
     # holdout
@@ -53,7 +58,7 @@ for it in range(args.num_boot):
 
         # train model
         _, lss, acc = ffnn.train(model, train_loader, test_loader,
-                                               num_epochs=args.num_epochs, device=device)
+                                 num_epochs=args.num_epochs, device=device)
 
         train_losses.append(lss['train'])
         train_acc.append(acc['train'])
@@ -63,18 +68,33 @@ for it in range(args.num_boot):
         # test
         metrics = ffnn.predict(model, test_loader)
         test_acc.append(metrics['accuracy'])
+        test_prec.append(metrics['precision'])
+        test_rec.append(metrics['recall'])
+        test_f1.append(metrics['F1'])
+        test_auc.append(metrics['AUC'])
+
 
 # compute test statistics
-n, min_max, mean, var, skew, kurt = stats.describe(test_acc)
-stderr = stats.sem(test_acc)
-conf = stats.norm.interval(0.05, loc=mean, scale=math.sqrt(var))
-stat_message = f"test accuracy\t{mean}\nstderr\t{stderr}\nconfidence\t{conf}"
-print(stat_message)
+def summary(values):
+    """
+    :param values: list of stats
+    :return: (name of stat, mean, stderr, conf) of given list
+    """
+    n, min_max, mean, var, skew, kurt = stats.describe(values)
+    stderr = stats.sem(values)
+    conf = stats.norm.interval(0.05, loc=mean, scale=math.sqrt(var))
+    return '\t'.join(['test accuracy', mean, stderr, conf])
 
 
 # save results
 with open("test_stats.tsv", "w") as f:
-    f.writelines(stat_message)
+    f.writelines([
+        summary(test_acc),
+        summary(test_prec),
+        summary(test_rec),
+        summary(test_f1),
+        summary(test_auc)
+    ])
 
 with open("epoch_train_losses.tsv", "w") as f:
     csv.writer(f, delimiter='\t').writerows(train_losses)
@@ -82,7 +102,7 @@ with open("epoch_train_losses.tsv", "w") as f:
 with open("epoch_train_acc.tsv", "w") as f:
     csv.writer(f, delimiter='\t').writerows(train_acc)
 
-with open("epoch_val_losses", "w") as f:
+with open("epoch_val_losses.tsv", "w") as f:
     csv.writer(f, delimiter='\t').writerows(val_losses)
 
 with open("epoch_val_acc.tsv", "w") as f:
