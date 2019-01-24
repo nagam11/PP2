@@ -32,7 +32,7 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 for it in range(args.num_boot):
 
     print(f"Bootstrap iteration {it + 1}")
-    # resample bootstrap data
+
     X_resample, y_resample = resample(X, y, replace=True)
     test_loader = ffnn.create_data_loader(X_resample, y_resample)
 
@@ -44,23 +44,24 @@ for it in range(args.num_boot):
     test_auc.append(metrics['AUC'])
 
 
-def summary(values):
+def summary(values, name=""):
     """
+    :param name: name of statistic
     :param values: list of stats
     :return: (name of stat, mean, stderr, conf) of given list
     """
     n, min_max, mean, var, skew, kurt = stats.describe(values)
     stderr = stats.sem(values)
     conf = stats.norm.interval(0.05, loc=mean, scale=math.sqrt(var))
-    return '\t'.join(['test accuracy', str(mean), str(stderr), str(conf)])
+    return '\t'.join([name, str(mean), str(stderr), str(conf)])
 
-print(summary(test_acc))
+
 # save results
 with open("test_stats.tsv", "w") as f:
-    f.writelines([
-        summary(test_acc),
-        summary(test_prec),
-        summary(test_rec),
-        summary(test_f1),
-        summary(test_auc)
-    ])
+    f.write('\n'.join([
+        summary(test_acc, 'accuracy'),
+        summary(test_prec, 'precision'),
+        summary(test_rec, 'recall'),
+        summary(test_f1, 'F1'),
+        summary(test_auc, 'AUROC')
+    ]))
