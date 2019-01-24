@@ -38,7 +38,7 @@ class NeuralNet(nn.Module):
         return out
 
 
-def train(model, train_data_loader, val_data_loader, device, num_epochs=50):
+def train(model, train_data_loader, val_data_loader, device, num_epochs=50, debug=False):
     epochs = []
     losses = {'train': [], 'validation': []}
     accuracies = {'train': [], 'validation': []}
@@ -48,7 +48,8 @@ def train(model, train_data_loader, val_data_loader, device, num_epochs=50):
     # Train and Validate
     for epoch in range(num_epochs):
 
-        print(f"epoch: {epoch + 1}")
+        if debug:
+            print(f"epoch: {epoch + 1}")
 
         ''' TRAINING '''
         tmp_loss = 0
@@ -77,7 +78,8 @@ def train(model, train_data_loader, val_data_loader, device, num_epochs=50):
         acc = sklearn.metrics.accuracy_score(labels, predictions)
         accuracies['train'].append(acc)
 
-        print(f"train loss: {tmp_loss / n_train}\ttrain accuracy: {acc}")
+        if debug:
+            print(f" train loss: {tmp_loss / n_train}\ttrain accuracy: {acc}")
 
         ''' VALIDATION '''
         tmp_loss = 0
@@ -98,7 +100,8 @@ def train(model, train_data_loader, val_data_loader, device, num_epochs=50):
         acc = sklearn.metrics.accuracy_score(labels, predictions)
         accuracies['validation'].append(acc)
 
-        print(f"val loss: {tmp_loss / n_val}\tval accuracy: {acc}")
+        if debug:
+            print(f" val loss: {tmp_loss / n_val}\tval accuracy: {acc}")
 
         epochs.append(epoch + 1)
 
@@ -138,7 +141,7 @@ def load_data(ppi_protvec):
     return data[:, :-1], data[:, -1:]
 
 
-def create_pytorch_dataset(X, y, batch_size=100):
+def create_data_loader(X, y, batch_size=100):
     """
     :param X: data
     :param y: labels

@@ -1,5 +1,4 @@
 import argparse
-from torch.utils.data.sampler import Sampler
 import matplotlib.pyplot as plt
 import torch
 import numpy as np
@@ -22,10 +21,10 @@ test_size = int(N / 10)
 data_ixs = np.random.permutation(np.arange(N))
 # train set
 train_ix = data_ixs[test_size:]
-train_loader = ffnn.create_pytorch_dataset(X[train_ix, :], y[train_ix, :])
+train_loader = ffnn.create_data_loader(X[train_ix, :], y[train_ix, :])
 # test set
 test_ix = data_ixs[:test_size]
-test_loader = ffnn.create_pytorch_dataset(X[test_ix, :], y[test_ix, :])
+test_loader = ffnn.create_data_loader(X[test_ix, :], y[test_ix, :])
 
 '''NEURAL NETWORK'''
 dimensions = train_loader.data.tensors[0].shape[1]
