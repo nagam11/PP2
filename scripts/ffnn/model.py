@@ -4,7 +4,6 @@ import torch
 import torch.nn as nn
 import torch.utils.data as utils
 import numpy as np
-import pprint
 
 
 # Fully connected neural network with one hidden layer
@@ -38,12 +37,13 @@ class NeuralNet(nn.Module):
         return out
 
 
-def train(model, train_data_loader, val_data_loader, device, num_epochs=50, debug=False):
+def train(model, device, train_data_loader, val_data_loader=None, num_epochs=50, debug=False):
     epochs = []
     losses = {'train': [], 'validation': []}
     accuracies = {'train': [], 'validation': []}
     n_train = train_data_loader.dataset.tensors[0].shape[0]
-    n_val = val_data_loader.dataset.tensors[0].shape[0]
+    if val_data_loader is not None:
+        n_val = val_data_loader.dataset.tensors[0].shape[0]
 
     # Train and Validate
     for epoch in range(num_epochs):
@@ -82,6 +82,10 @@ def train(model, train_data_loader, val_data_loader, device, num_epochs=50, debu
             print(f" train loss: {tmp_loss / n_train}\ttrain accuracy: {acc}")
 
         ''' VALIDATION '''
+        # skip validation if no set is given
+        if val_data_loader is None:
+            continue
+
         tmp_loss = 0
         predictions = []
         labels = []
