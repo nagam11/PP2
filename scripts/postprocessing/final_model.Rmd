@@ -46,7 +46,7 @@ test_stats
 ggplot(test_stats, aes(stat_name, mean, fill = stat_name)) +
   geom_bar(stat = 'identity') + ylim(0, 1) +
   geom_errorbar(aes(ymin=mean-stderr, ymax=mean+stderr), width=.2) +
-  geom_text(aes(label=round(stderr, 5)), vjust=-0.3, size=3.5) +
+  geom_text(aes(label=paste(round(mean, 2), "+/-", round(stderr, 5))), vjust=-0.8, size=3.5) +
   scale_fill_brewer(palette = "Set1")
 ```
 
