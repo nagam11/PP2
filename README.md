@@ -9,12 +9,14 @@ We provide two different prediction models.
 
 To run the project, you need to use Python 3.6+. The required dependencies are listed below: 
 
-* torch 
-* torchvision
-* numpy 
-* matplotlib
-* biovec 
-* sklearn 
+```{python}
+torch 
+torchvision
+numpy 
+matplotlib
+biovec 
+sklearn 
+```
 
 To install the dependencies run
 
@@ -61,4 +63,5 @@ python scripts/ffnn/validation/bootstrapping.py \
 		--model=trained_models/ffnn_model.ckpt \
 		--num_boot=1000
 ```
-        
+### Visualistation
+The results of cross-validation and bootstrapping are summarised in `scripts/postprocessing/final_model.html`
