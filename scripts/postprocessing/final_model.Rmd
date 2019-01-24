@@ -15,10 +15,10 @@ library(cowplot)
 ## Bootstrapping Results
 ### Epochs
 ```{r}
-epoch_train_acc <- fread("../validation/epoch_train_acc.tsv")
-epoch_train_loss <- fread("../validation/epoch_train_losses.tsv")
-epoch_val_acc <- fread("../validation/epoch_val_acc.tsv")
-epoch_val_loss <- fread("../validation/epoch_val_losses.tsv")
+epoch_train_acc <- fread("../ffnn/validation/epoch_train_acc.tsv")
+epoch_train_loss <- fread("../ffnn/validation/epoch_train_losses.tsv")
+epoch_val_acc <- fread("../ffnn/validation/epoch_val_acc.tsv")
+epoch_val_loss <- fread("../ffnn/validation/epoch_val_losses.tsv")
 
 epochs <- ncol(epoch_train_acc)
 epoch_dt <- data.table(Epoch = rep(1:epochs, 2),
@@ -40,7 +40,7 @@ ggplot(epoch_dt, aes(Epoch, Loss, col = data_set)) +
 
 ### Test Statistics
 ```{r}
-test_stats <- fread("../validation/test_stats.tsv", col.names = c("stat_name", "mean", "stderr", "confidence"))
+test_stats <- fread("../ffnn/validation/test_stats.tsv", col.names = c("stat_name", "mean", "stderr", "confidence"))
 test_stats
 
 ggplot(test_stats, aes(stat_name, mean, fill = stat_name)) +
