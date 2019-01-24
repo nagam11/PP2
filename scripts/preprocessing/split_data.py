@@ -22,8 +22,8 @@ data_ixs = np.random.permutation(np.arange(N))
 train = data_ixs[test_size:]
 test = data_ixs[:test_size]
 
-train_set = np.append(X[train], y[train])
-test_set = np.append(X[test], y[test])
+train_set = np.append(X[train], np.vstack(y[train]), axis=1)
+test_set = np.append(X[test], np.vstack(y[test]), axis=1)
 
 np.save(args.train_set, train_set)
 np.save(args.test_set, test_set)
