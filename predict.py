@@ -3,7 +3,7 @@ import argparse
 import os
 import numpy as np
 import biovec
-from scripts.main import NeuralNet, input_size, hidden_size, num_classes
+import scripts.ffnn.model as ffnn
 
 parser = argparse.ArgumentParser(description='Predict ppi bindings')
 parser.add_argument('-i', '--input_file', required=True)
@@ -47,6 +47,18 @@ with open(input_file) as file:
             protein_sequences.append(line)
         i = i + 1
 
+
+# load model
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+
+# Load NN and use same parameters as for the trained model
+dimensions = compose_data(protein_sequences[0]).shape[1]
+model = ffnn.NeuralNet(input_size=dimensions).to(device)
+
+# Load saved model and set to evaluation mode
+model.load_state_dict(torch.load("trained_models/model.ckpt"))
+model.eval()
+
 # Write to output file
 with open(output_file, "w") as file:
     for i in range(len(proteins_names)):
@@ -59,14 +71,6 @@ with open(output_file, "w") as file:
         j = 0
         for j in range(3):
             file.write(protein_sequences[i][j] + "\tn/a\tn/a\n")
-
-        device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-
-        # Load NN and use same parameters as for the trained model
-        model = NeuralNet(input_size, hidden_size, num_classes).to(device)
-        # Load saved model and set to evaluation mode
-        model.load_state_dict(torch.load("trained_models/model.ckpt"))
-        model.eval()
 
         # Create n-grams from sequence for inputs
         X_test = compose_data(protein_sequences[i])
