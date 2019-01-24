@@ -63,5 +63,5 @@ python scripts/ffnn/validation/bootstrapping.py \
 		--model=trained_models/ffnn_model.ckpt \
 		--num_boot=1000
 ```
-### Visualistation
+### Visualisation
 The results of cross-validation and bootstrapping are summarised in `scripts/postprocessing/final_model.html`
